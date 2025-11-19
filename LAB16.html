@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Laboratorio 16 - Eventos y JSON</title>
+
+  <style>
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 20px;
+  line-height: 1.5;
+  background: #f9f9f9;
+  color: #222;
+}
+
+
+section {
+  background: #ffffff;
+  border: 1px solid #dcdcdc;
+  padding: 14px;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+h2.section-title {
+  margin-top: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+
+.btn {
+  padding: 7px 12px;
+  margin-right: 6px;
+  cursor: pointer;
+  border: none;
+  background: #4a90e2;
+  color: white;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.btn:hover {
+  background: #3b7ac1;
+}
+
+.input-inline {
+  padding: 7px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+
+
+
+.error-span {
+  display: block;
+  color: #d32f2f;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+
+
+.gallery-main img {
+  max-width: 100%;
+  max-height: 320px;
+  border-radius: 4px;
+  display: block;
+}
+
+.gallery-thumbs img {
+  width: 85px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 8px;
+  cursor: pointer;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  transition: border 0.2s ease, transform 0.2s ease;
+}
+
+.gallery-thumbs img:hover {
+  border-color: #4a90e2;
+  transform: scale(1.05);
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- EJERCICIO 3 Y 4 -->
+  <section id="ej3-4">
+    <h2 class="section-title">EJERCICIO 3 Y 4 - CAMBIAR TEXTO Y ALTERNAR</h2>
+
+    <p id="parrafo-cambiar">TEXTO ORIGINAL</p>
+    <div class="controls">
+      <button id="btn-cambiar" class="btn">CAMBIAR TEXTO</button>
+    </div>
+  </section>
+
+  <!-- EJERCICIO 5-->
+  <section id="ej5">
+    <h2 class="section-title">EJERCICIO 5 - MODO OSCURO</h2>
+    <div class="controls">
+      <button id="btn-toggle-oscuro" class="btn">TOGGLE MODO OSCURO</button>
+    </div>
+  </section>
+
+  <!-- EJERCICIO 6-->
+  <section id="ej6">
+    <h2 class="section-title">EJERCICIO 6 - CONTADOR</h2>
+    <div class="controls">
+      <button id="btn-decrement" class="btn">-</button>
+      <span id="contador-valor" style="font-weight:600; margin:0 8px;">0</span>
+      <button id="btn-increment" class="btn">+</button>
+    </div>
+    <div id="contador-mensaje" style="margin-top:8px; color:#b00020; font-size:13px;"></div>
+  </section>
+
+  <!-- EJERCICIO 7-->
+  <section id="ej7">
+    <h2 class="section-title">EJERCICIO 7 - AGREGAR Y ELIMINAR ELEMENTOS DE LISTA</h2>
+    <input id="input-nuevo-item" class="input-inline" placeholder="texto para agregar" />
+    <button id="btn-agregar-item" class="btn">AGREGAR</button>
+    <button id="btn-borrar-ultimo" class="btn">BORRAR ULTIMO</button>
+    <ul id="lista-dinamica" class="simple-list"></ul>
+  </section>
+
+  <!-- EJERCICIO 8 -->
+  <section id="ej8">
+    <h2 class="section-title">EJERCICIO 8 - VALIDAR FORMULARIO</h2>
+    <form id="form-validar" novalidate>
+      <div>
+        <label for="nombre">Nombre</label><br>
+        <input id="nombre" name="nombre" class="input-inline" />
+        <div id="error-nombre"></div>
+      </div>
+      <div style="margin-top:8px;">
+        <label for="correo">Correo</label><br>
+        <input id="correo" name="correo" class="input-inline" />
+        <div id="error-correo"></div>
+      </div>
+      <div style="margin-top:8px;">
+        <button id="btn-validar-form" class="btn" type="submit">ENVIAR</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- EJERCICIO 9 -->
+  <section id="ej9">
+  <h2 class="section-title">EJERCICIO 9 - GALERIA CON MINIATURAS</h2>
+
+  <div class="gallery-main" id="gallery-main">
+    <img id="img-principal"
+      src="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img1.jpg"
+      alt="imagen principal">
+  </div>
+
+  <div class="gallery-thumbs" style="margin-top:8px;">
+    <img class="thumb"
+      src="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img1.jpg"
+      data-full="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img1.jpg"
+      alt="mini 1">
+
+    <img class="thumb"
+      src="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img2.jpg"
+      data-full="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img2.jpg"
+      alt="mini 2">
+
+    <img class="thumb"
+      src="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img3.jpg"
+      data-full="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img3.jpg"
+      alt="mini 3">
+
+    <img class="thumb"
+      src="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img4.jpg"
+      data-full="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img4.jpg"
+      alt="mini 4">
+  </div>
+</section>
+
+  
