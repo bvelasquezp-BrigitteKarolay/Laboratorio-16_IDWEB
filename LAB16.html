@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Laboratorio 16 - Eventos y JSON</title>
+
+  <style>
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 20px;
+  line-height: 1.5;
+  background: #f7f2fa;
+  color: #2d2240;
+}
+section {
+  background: #ffffff;
+  border: 1px solid #d6c9e8;
+  padding: 16px;
+  margin-bottom: 18px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(90, 64, 120, 0.15);
+}
+h2.section-title {
+  margin-top: 0;
+  font-size: 19px;
+  font-weight: bold;
+  color: #5d3b9c;
+}
+.btn {
+  padding: 8px 14px;
+  margin-right: 8px;
+  cursor: pointer;
+  border: none;
+  background: #7a4fd9;
+  color: #ffffff;
+  border-radius: 5px;
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  background: #693dc8;
+  transform: translateY(-2px);
+}
+
+.input-inline {
+  padding: 8px;
+  border: 1px solid #c8b6e8;
+  border-radius: 5px;
+  margin-right: 8px;
+  background: #faf8ff;
+}
+.error-span {
+  display: block;
+  color: #b9244f;
+  font-size: 13px;
+  margin-top: 4px;
+}
+.gallery-main img {
+  max-width: 100%;
+  max-height: 320px;
+  border-radius: 6px;
+  border: 2px solid #d4c5ee;
+  display: block;
+}
+.gallery-thumbs img {
+  width: 85px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 10px;
+  cursor: pointer;
+  border: 2px solid #cbb7f0;
+  border-radius: 4px;
+  transition: border 0.2s ease, transform 0.2s ease;
+}
+
+.gallery-thumbs img:hover {
+  border-color: #7a4fd9;
+  transform: scale(1.07);
+}
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table-container th,
+.table-container td {
+  border: 1px solid #d1c2eb;
+  padding: 8px;
+  text-align: left;
+}
+.table-container th {
+  background: #ede4fb;
+  font-weight: bold;
+  color: #4c2d85;
+}
+.crud-table button {
+  padding: 5px 10px;
+  border: none;
+  background: #7a4fd9;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.crud-table button:hover {
+  background: #5e34b5;
+}
+.cuadro {
+  width: 60px;
+  height: 60px;
+  background: #7a4fd9;
+  margin-top: 12px;
+  border-radius: 6px;
+  transition: transform 0.8s ease;
+}
+.mover {
+  transform: translateX(320px);
+}
+.modo-oscuro {
+  background: #1b1129 !important;
+  color: #f0e8ff !important;
+}
+
+.modo-oscuro section {
+  background: #27183f !important;
+  border-color: #3a2b55 !important;
+}
+
+.modo-oscuro .btn {
+  background: #9b6ff2;
+}
+
+.modo-oscuro .btn:hover {
+  background: #7c54d1;
+}
+ul.simple-list,
+ul {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+.resaltar {
+  background: #efe8ff;
+}
+.perfil-box {
+  padding: 12px;
+  border-radius: 6px;
+  background: #f1e9ff;
+  border: 1px solid #d2c6f3;
+  color: #3a2d57;
+  margin-top: 10px;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- EJERCICIO 3 Y 4 -->
+  <section id="ej3-4">
+    <h2 class="section-title">EJERCICIO 3 Y 4 - CAMBIAR TEXTO Y ALTERNAR</h2>
+
+    <p id="parrafo-cambiar">TEXTO ORIGINAL</p>
+    <div class="controls">
+      <button id="btn-cambiar" class="btn">CAMBIAR TEXTO</button>
+    </div>
+  </section>
+
+  <!-- EJERCICIO 5-->
+  <section id="ej5">
+    <h2 class="section-title">EJERCICIO 5 - MODO OSCURO</h2>
+    <div class="controls">
+      <button id="btn-toggle-oscuro" class="btn">TOGGLE MODO OSCURO</button>
+    </div>
+  </section>
+
+  <!-- EJERCICIO 6-->
+  <section id="ej6">
+    <h2 class="section-title">EJERCICIO 6 - CONTADOR</h2>
+    <div class="controls">
+      <button id="btn-decrement" class="btn">-</button>
+      <span id="contador-valor" style="font-weight:600; margin:0 8px;">0</span>
+      <button id="btn-increment" class="btn">+</button>
+    </div>
+    <div id="contador-mensaje" style="margin-top:8px; color:#b00020; font-size:13px;"></div>
+  </section>
+
+  <!-- EJERCICIO 7-->
+  <section id="ej7">
+    <h2 class="section-title">EJERCICIO 7 - AGREGAR Y ELIMINAR ELEMENTOS DE LISTA</h2>
+    <input id="input-nuevo-item" class="input-inline" placeholder="texto para agregar" />
+    <button id="btn-agregar-item" class="btn">AGREGAR</button>
+    <button id="btn-borrar-ultimo" class="btn">BORRAR ULTIMO</button>
+    <ul id="lista-dinamica" class="simple-list"></ul>
+  </section>
+
+  <!-- EJERCICIO 8 -->
+  <section id="ej8">
+    <h2 class="section-title">EJERCICIO 8 - VALIDAR FORMULARIO</h2>
+    <form id="form-validar" novalidate>
+      <div>
+        <label for="nombre">Nombre</label><br>
+        <input id="nombre" name="nombre" class="input-inline" />
+        <div id="error-nombre"></div>
+      </div>
+      <div style="margin-top:8px;">
+        <label for="correo">Correo</label><br>
+        <input id="correo" name="correo" class="input-inline" />
+        <div id="error-correo"></div>
+      </div>
+      <div style="margin-top:8px;">
+        <button id="btn-validar-form" class="btn" type="submit">ENVIAR</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- EJERCICIO 9 -->
+  <section id="ej9">
+  <h2 class="section-title">EJERCICIO 9 - GALERIA CON MINIATURAS</h2>
+
+  <div class="gallery-main" id="gallery-main">
+    <img id="img-principal"
+      src="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img1.jpg"
+      alt="imagen principal">
+  </div>
+
+  <div class="gallery-thumbs" style="margin-top:8px;">
+    <img class="thumb"
+      src="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img1.jpg"
+      data-full="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img1.jpg"
+      alt="mini 1">
+
+    <img class="thumb"
+      src="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img2.jpg"
+      data-full="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img2.jpg"
+      alt="mini 2">
+
+    <img class="thumb"
+      src="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img3.jpg"
+      data-full="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img3.jpg"
+      alt="mini 3">
+
+    <img class="thumb"
+      src="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img4.jpg"
+      data-full="https://raw.githubusercontent.com/bvelasquezp-BrigitteKarolay/Laboratorio-16_IDWEB/main/img/img4.jpg"
+      alt="mini 4">
+  </div>
+</section>
+
+  <!-- EJERCICIO 10 -->
+  <section id="ej10">
+    <h2 class="section-title">EJERCICIO 10 - TABLA DINAMICA</h2>
+    <div class="controls">
+      <button id="btn-generar-tabla" class="btn">GENERAR TABLA</button>
+    </div>
+    <div class="table-container" id="tabla-productos-area" style="margin-top:8px;"></div>
+  </section>
+
+  <!-- EJERCICIO 11 -->
+  <section id="ej11">
+    <h2 class="section-title">EJERCICIO 11 - DELEGACION EN LISTA</h2>
+    <ul id="lista-delegada" class="simple-list">
+      <li>Elemento A</li>
+      <li>Elemento B</li>
+      <li>Elemento C</li>
+    </ul>
+    <p style="font-size:13px; margin-top:6px;">HACER CLICK EN CUALQUIER ITEM PARA ELIMINARLO</p>
+  </section>
+
+  <!-- EJERCICIO 12 -->
+  <section id="ej12">
+    <h2 class="section-title">EJERCICIO 12 - ANIMACION</h2>
+    <div>
+      <button id="btn-mover" class="btn">MOVER</button>
+      <button id="btn-reiniciar" class="btn">REINICIAR</button>
+    </div>
+    <div class="cuadro" id="cuadro-anim"></div>
+  </section>
+
+  <!-- EJERCICIO 13 -->
+  <section id="ej13">
+    <h2 class="section-title">EJERCICIO 13 - CRUD USUARIOS</h2>
+    <form id="form-crud">
+      <input id="crud-nombre" name="crud-nombre" placeholder="nombre" class="input-inline" />
+      <input id="crud-edad" name="crud-edad" placeholder="edad" class="input-inline" />
+      <button id="btn-add-usuario" class="btn" type="submit">AÑADIR</button>
+    </form>
+
+    <div style="margin-top:8px;" class="table-container">
+      <table id="tabla-usuarios" class="crud-table">
+        <thead>
+          <tr><th>NOMBRE</th><th>EDAD</th><th>ACCIONES</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- EJERCICIO 14 -->
+  <section id="ej14">
+    <h2 class="section-title">EJERCICIO 14 - OBJETO PERSONA A JSON</h2>
+    <p id="ej14-info">REVISA LA CONSOLA PARA VER EL JSON</p>
+  </section>
+
+  <!-- EJERCICIO 15 -->
+  <section id="ej15">
+    <h2 class="section-title">EJERCICIO 15 - JSON A OBJETO</h2>
+    <p id="ej15-mostrar">VALOR A MOSTRAR</p>
+  </section>
+
+  <!-- EJERCICIO 16 -->
+  <section id="ej16">
+    <h2 class="section-title">EJERCICIO 16 - PRODUCTOS JSON</h2>
+    <div class="controls">
+      <button id="btn-procesar-productos" class="btn">PROCESAR PRODUCTOS</button>
+    </div>
+    <ul id="lista-productos" class="simple-list" style="margin-top:8px;"></ul>
+  </section>
+
+  <!-- EJERCICIO 17 -->
+  <section id="ej17">
+    <h2 class="section-title">EJERCICIO 17 - GUARDAR EN localStorage</h2>
+    <div class="controls">
+      <button id="btn-guardar-usuario" class="btn">GUARDAR USUARIO</button>
+      <button id="btn-recuperar-usuario" class="btn">RECUPERAR USUARIO</button>
+    </div>
+    <div id="area-usuario-local" style="margin-top:8px;"></div>
+  </section>
+
+  <!-- EJERCICIO 18 -->
+  <section id="ej18">
+    <h2 class="section-title">EJERCICIO 18 - TABLA LIBROS DESDE JSON</h2>
+    <div class="controls">
+      <button id="btn-generar-libros" class="btn">GENERAR TABLA LIBROS</button>
+    </div>
+    <div id="tabla-libros-area" class="table-container" style="margin-top:8px;"></div>
+  </section>
+
+  <!-- EJERCICIO 19 -->
+  <section id="ej19">
+    <h2 class="section-title">EJERCICIO 19 - MODIFICAR JSON</h2>
+    <p id="ej19-info">REVISA LA CONSOLA PARA VER EL RESULTADO</p>
+  </section>
+
+  <!-- EJERCICIO 20 -->
+  <section id="ej20">
+    <h2 class="section-title">EJERCICIO 20 - CREAR OBJETO Y MOSTRAR JSON</h2>
+    <input id="input-nombre-20" placeholder="tu nombre" class="input-inline" />
+    <button id="btn-guardar-json20" class="btn">GUARDAR Y MOSTRAR</button>
+  </section>
+
+  <!-- EJERCICIO 21 -->
+  <section id="ej21">
+    <h2 class="section-title">EJERCICIO 21 - LISTA DE TAREAS DESDE JSON</h2>
+    <div class="controls">
+      <button id="btn-cargar-tareas" class="btn">CARGAR TAREAS</button>
+    </div>
+    <ul id="lista-tareas" class="simple-list" style="margin-top:8px;"></ul>
+  </section>
+
+  <!-- EJERCICIO 22 -->
+  <section id="ej22">
+    <h2 class="section-title">EJERCICIO 22 - SIMULADOR DE PERFIL</h2>
+    <form id="form-perfil">
+      <input id="perfil-nombre" placeholder="nombre" class="input-inline" />
+      <input id="perfil-edad" placeholder="edad" class="input-inline" />
+      <input id="perfil-pais" placeholder="pais" class="input-inline" />
+      <button id="btn-guardar-perfil" class="btn" type="submit">GUARDAR PERFIL</button>
+    </form>
+    <div id="area-perfil" style="margin-top:8px;"></div>
+  </section>
+
+  <script src="LAB16.js"></script>
+</body>
+</html>
